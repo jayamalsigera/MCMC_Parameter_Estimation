@@ -1,4 +1,4 @@
-function x_sim = simulate_system(params, x0, t, Vm, iter)
+function x_sim = simulate_system_mcmc(params, x0, t, Vm)
     % SIMULATE_SYSTEM Integrates the RIP dynamics using given parameters.
     %
     % Inputs:

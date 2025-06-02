@@ -14,9 +14,9 @@ x0 = [0; 0; pi - 0.1; 0];
 Vm = @(t) chirp(t, 0.1, 100, 5, 'linear');
 
 % === MCMC Parameters ===
-num_iters = 100;
+num_iters = 10000;
 param_dim = length(initial_params);
-step_size = [1e-5, 1e-4, 1e-3, 1e-2];
+step_size = [1e-2, 1e-3, 1e-4, 1e-5];
 % step_size = 1e-3;
 
 param_bounds = [1e-3, 0.01;
@@ -138,7 +138,7 @@ sgtitle('Joint Posterior Distributions');
 
 % === Final Fit Plot ===
 figure;
-x_best = simulate_system(mean_estimates, x0, t, Vm);
+x_best = simulate_system_mcmc(mean_estimates, x0, t, Vm);
 plot(t, rad2deg(x(:,3)), 'r--', t, rad2deg(x_best(:,3)), 'b');
 legend('True \\alpha', 'Estimated \\alpha');
 xlabel('Time (s)'); ylabel('Angle (deg)');
