@@ -18,7 +18,7 @@ function err = compute_error(params, x0, t, Vm, x_ref)
     % === Define weights for each state variable in the error ===
     %   [theta, dtheta, alpha, dalpha] 
     %   alpha is more important, hence higher weight
-    weights = [0.01, 0.01, 0.6, 0.2];
+    weights = [0, 0, 1, 1 ];
 
     % === Normalize weights so their sum is 1 ===
     weights = weights / sum(weights);
