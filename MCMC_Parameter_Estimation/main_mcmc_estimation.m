@@ -1,7 +1,7 @@
 clear; clc;
 
 % === Load Simulated Data ===
-addpath('D:\MATLAB\MCMC\Final\Inverted_Pendulum_Model');
+addpath('D:\MATLAB\MCMC_Parameter_Estimation\Inverted_Pendulum_Model');
 load('rip_sim_data.mat');  % loads: t, x
 
 % === Initial Setup ===
@@ -29,7 +29,7 @@ chain = zeros(num_iters, param_dim);
 errors = zeros(num_iters, 1);
 
 % === Initial Error ===
-error_prev = compute_error(params_current, x0, t, Vm, x);
+error_prev = compute_error_mcmc(params_current, x0, t, Vm, x);
 
 % === Initialize Real-Time Error Convergence Plot ===
 figure('Name', 'MCMC Error Convergence', 'NumberTitle', 'off');
@@ -90,7 +90,7 @@ for i = 1:num_iters
     end
 
     % Simulate proposal
-    error_proposal = compute_error(proposal, x0, t, Vm, x);
+    error_proposal = compute_error_mcmc(proposal, x0, t, Vm, x);
 
     % Acceptance rule
     if error_proposal < error_prev || rand < exp((error_prev - error_proposal)/1e-3)
@@ -157,6 +157,6 @@ R = corrcoef(samples);
 disp('Correlation Matrix:');
 disp(array2table(R, 'VariableNames', param_names, 'RowNames', param_names));
 
-best_error = compute_error(mean_estimates, x0, t, Vm, x);
+best_error = compute_error_mcmc(mean_estimates, x0, t, Vm, x);
 AIC = 2 * param_dim + length(t) * log(best_error / length(t));
 fprintf('AIC = %.2f\\n', AIC);

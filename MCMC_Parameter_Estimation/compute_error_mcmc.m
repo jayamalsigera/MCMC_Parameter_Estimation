@@ -1,4 +1,4 @@
-function err = compute_error(params, x0, t, Vm, x_ref)
+function err = compute_error_mcmc(params, x0, t, Vm, x_ref)
     x_sim = simulate_system(params, x0, t, Vm);
     alpha_sim = x_sim(:,3);
     alpha_ref = x_ref(:,3);
