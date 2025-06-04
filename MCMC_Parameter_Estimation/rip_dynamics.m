@@ -1,4 +1,4 @@
-function dx = rip_dynamics(t, x, Vm, Br, Bp, kt, km, eta_m, eta_g)
+function dx = rip_dynamics(t, x, Vm, Br, km, eta_m, eta_g)
     % ROTARY INVERTED PENDULUM NONLINEAR DYNAMICS (for MCMC Estimation)
     % 
     % Inputs:
@@ -36,11 +36,13 @@ function dx = rip_dynamics(t, x, Vm, Br, Bp, kt, km, eta_m, eta_g)
 
 	% === ESTIMATION PARAMETERS ===
 	% Bp
-	% Br
+	% 
 	% km
 	% kt
 	% eta_m
 	% eta_g
+	Bp = Br;
+	kt = km;
 
     % === Extract States ===
     theta  = x(1);    % Arm angle (rad)

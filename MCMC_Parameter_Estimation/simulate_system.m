@@ -12,17 +12,15 @@ function x_sim = simulate_system(params, x0, t, Vm)
 
     % === Unpack Parameters ===
 	Br     = params(1);
-	Bp     = params(2);
-	kt     = params(3);
-	km     = params(4);
-	eta_m  = params(5);
-	eta_g  = params(6);
+	km     = params(2);
+	eta_m  = params(3);
+	eta_g  = params(4);
 
-
+	
     % === Integration with ode45 ===
 
     % Solve using ode45
-    sol = ode45(@(t, x) rip_dynamics(t, x, Vm(t), Br, Bp, kt, km, eta_m, eta_g), t, x0);
+    sol = ode45(@(t, x) rip_dynamics(t, x, Vm(t), Br, km, eta_m, eta_g), t, x0);
 
     % Evaluate solution at given time points
     x_sim = deval(sol, t)';  % Ensure output is Nx4 matrix

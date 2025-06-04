@@ -17,19 +17,19 @@ load('rip_sim_data.mat');  % loads: t, x
 
 %% === Initial Setup ===
 
-param_names = {'Br', 'Bp', 'kt', 'km', 'eta_m', 'eta_g'};
+param_names = {'Br_Bp', 'kt_km', 'eta_m', 'eta_g'};
 x0 = [0; 0; pi - 0.1; 0];  % initial state
 Vm = @(t) chirp(t, 0.1, 100, 5, 'linear');  % input voltage
 
 %% === Gaussian Priors (mean and std from similar motors) ===
 
-% true_params = [0.0024, 0.0024, 0.007, 0.007, 0.69, 0.9];
-mu_prior = [0.004, 0.004, 0.005, 0.005, 0.8, 0.8];     % prior mean µ
-sigma_prior = [0.002, 0.002, 0.002, 0.002, 0.2, 0.2];  % prior std σ (uncertainty)
+% true_params = [0.0024, 0.007, 0.69, 0.9];
+mu_prior = [0.002, 0.0065, 0.8, 0.8];     % prior mean µ
+sigma_prior = [0.001, 0.001, 0.1, 0.1];  % prior std σ (uncertainty)
 
 %% === MCMC Settings ===
 
-num_iters = 10000;				% chain length N
+num_iters = 20000;				% chain length N
 param_dim = length(mu_prior);	% dimension d
 burn_in = floor(num_iters / 2); % burn-in period
 
@@ -38,8 +38,6 @@ step_size = 0.01 * sigma_prior;
 
 % === Parameter bounds ===
 param_bounds = [1e-4, 1e-2;
-                1e-4, 1e-2;
-                1e-4, 1e-2;
                 1e-4, 1e-2;
                 0.5, 1.0;
                 0.5, 1.0];
@@ -55,7 +53,7 @@ errors = zeros(num_iters, 1);			% store errors
 % MSE from model output
 error_current = compute_error(params_current, x0, t, Vm, x_ref);	
 
-noise_std = 0.05;% measurement noise stddev
+noise_std = 0.001;% measurement noise stddev
 
 % log-likelihood: ℓ(x) = -0.5 * (e/σ)²
 log_like_current = -0.5 * (error_current / noise_std)^2;
@@ -79,7 +77,7 @@ hold on;
 
 figure('Name', 'Real-Time Parameter Trace', 'NumberTitle', 'off');
 trace_plots = gobjects(param_dim, 1);
-true_params = [0.0024, 0.0024, 0.007, 0.007, 0.69, 0.90];
+true_params = [0.0024, 0.007, 0.69, 0.90];
 for k = 1:param_dim
     subplot(param_dim, 1, k);
     trace_plots(k) = plot(1, params_current(k), 'b');
